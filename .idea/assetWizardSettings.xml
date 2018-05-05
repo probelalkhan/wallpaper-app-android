@@ -11,29 +11,11 @@
                   <entry key="vectorAssetStep">
                     <value>
                       <PersistentState>
-                        <option name="children">
-                          <map>
-                            <entry key="clipartAsset">
-                              <value>
-                                <PersistentState>
-                                  <option name="values">
-                                    <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/file/ic_file_download_black_24dp.xml" />
-                                    </map>
-                                  </option>
-                                </PersistentState>
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ebe8e5" />
-                            <entry key="height" value="50" />
-                            <entry key="outputName" value="ic_file_download_black_24dp" />
-                            <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\iambe" />
-                            <entry key="width" value="50" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_tease" />
+                            <entry key="sourceFile" value="C:\Users\iambe\OneDrive\Desktop\ic_tease.svg" />
                           </map>
                         </option>
                       </PersistentState>

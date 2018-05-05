@@ -9,6 +9,7 @@ import android.view.MenuItem;
 
 import net.simplifiedcoding.wallpaperhub.R;
 import net.simplifiedcoding.wallpaperhub.fragments.HomeFragment;
+import net.simplifiedcoding.wallpaperhub.fragments.SettingsFragment;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -43,7 +44,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 fragment = new HomeFragment();
                 break;
             case R.id.nav_set:
-                fragment = new HomeFragment();
+                fragment = new SettingsFragment();
                 break;
             default:
                 fragment = new HomeFragment();
