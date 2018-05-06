@@ -36,23 +36,25 @@ public class WallpapersActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wallpapers);
 
-        wallpaperList = new ArrayList<>();
-        recyclerView = findViewById(R.id.recycler_view);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new WallpapersAdapter(this, wallpaperList);
-
-        recyclerView.setAdapter(adapter);
-
-        progressBar = findViewById(R.id.progressbar);
-
-
         Intent intent = getIntent();
         String category = intent.getStringExtra("category");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(category);
         setSupportActionBar(toolbar);
+
+        wallpaperList = new ArrayList<>();
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new WallpapersAdapter(this, wallpaperList, category);
+
+        recyclerView.setAdapter(adapter);
+
+        progressBar = findViewById(R.id.progressbar);
+
+
+
 
         dbWallpapers = FirebaseDatabase.getInstance().getReference("images")
                 .child(category);
@@ -62,9 +64,15 @@ public class WallpapersActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 progressBar.setVisibility(View.GONE);
-                if(dataSnapshot.exists()){
-                    for(DataSnapshot wallpaperSnapshot: dataSnapshot.getChildren()){
-                        Wallpaper w = wallpaperSnapshot.getValue(Wallpaper.class);
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot wallpaperSnapshot : dataSnapshot.getChildren()) {
+
+                        String id = wallpaperSnapshot.getKey();
+                        String title = wallpaperSnapshot.child("title").getValue(String.class);
+                        String desc = wallpaperSnapshot.child("desc").getValue(String.class);
+                        String url = wallpaperSnapshot.child("url").getValue(String.class);
+
+                        Wallpaper w = new Wallpaper(id, title, desc, url);
                         wallpaperList.add(w);
                     }
                     adapter.notifyDataSetChanged();
