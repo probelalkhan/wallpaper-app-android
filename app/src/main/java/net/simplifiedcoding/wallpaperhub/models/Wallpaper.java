@@ -9,10 +9,17 @@ public class Wallpaper {
 
     public String title, desc, url;
 
-    public Wallpaper(String id, String title, String desc, String url) {
+    @Exclude
+    public String category;
+
+    @Exclude
+    public boolean isFavourite = false;
+
+    public Wallpaper(String id, String title, String desc, String url, String category) {
         this.id = id;
         this.title = title;
         this.desc = desc;
         this.url = url;
+        this.category = category;
     }
 }

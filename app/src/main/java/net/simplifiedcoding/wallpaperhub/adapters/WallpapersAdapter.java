@@ -31,12 +31,10 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
     private Context mCtx;
     private List<Wallpaper> wallpaperList;
-    private String category;
 
-    public WallpapersAdapter(Context mCtx, List<Wallpaper> wallpaperList, String category) {
+    public WallpapersAdapter(Context mCtx, List<Wallpaper> wallpaperList) {
         this.mCtx = mCtx;
         this.wallpaperList = wallpaperList;
-        this.category = category;
     }
 
     @Override
@@ -52,6 +50,10 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         Glide.with(mCtx)
                 .load(w.url)
                 .into(holder.imageView);
+
+        if (w.isFavourite) {
+            holder.checkBoxFav.setChecked(true);
+        }
     }
 
     @Override
@@ -98,13 +100,15 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                 return;
             }
 
-            DatabaseReference dbFavs = FirebaseDatabase.getInstance().getReference("users")
-                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .child("favourites")
-                    .child(category);
 
             int position = getAdapterPosition();
             Wallpaper w = wallpaperList.get(position);
+
+
+            DatabaseReference dbFavs = FirebaseDatabase.getInstance().getReference("users")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child("favourites")
+                    .child(w.category);
 
             if (b) {
                 dbFavs.child(w.id).setValue(w);
