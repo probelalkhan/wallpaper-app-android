@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import net.simplifiedcoding.wallpaperhub.R;
+import net.simplifiedcoding.wallpaperhub.fragments.FavouritesFragment;
 import net.simplifiedcoding.wallpaperhub.fragments.HomeFragment;
 import net.simplifiedcoding.wallpaperhub.fragments.SettingsFragment;
 
@@ -41,7 +42,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 fragment = new HomeFragment();
                 break;
             case R.id.nav_fav:
-                fragment = new HomeFragment();
+                fragment = new FavouritesFragment();
                 break;
             case R.id.nav_set:
                 fragment = new SettingsFragment();
