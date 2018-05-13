@@ -3,9 +3,13 @@ package net.simplifiedcoding.wallpaperhub.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import net.simplifiedcoding.wallpaperhub.Manifest;
 import net.simplifiedcoding.wallpaperhub.R;
 import net.simplifiedcoding.wallpaperhub.models.Category;
 import net.simplifiedcoding.wallpaperhub.models.Wallpaper;
@@ -107,6 +112,9 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
                     break;
                 case R.id.button_download:
+
+                    downloadWallpaper(wallpaperList.get(getAdapterPosition()));
+
                     break;
 
             }
@@ -149,6 +157,72 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                 e.printStackTrace();
             }
             return bmpUri;
+        }
+
+
+        private void downloadWallpaper(final Wallpaper wallpaper) {
+            ((Activity) mCtx).findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
+
+            Glide.with(mCtx)
+                    .asBitmap()
+                    .load(wallpaper.url)
+                    .into(new SimpleTarget<Bitmap>() {
+                              @Override
+                              public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+                                  ((Activity) mCtx).findViewById(R.id.progressbar).setVisibility(View.GONE);
+
+                                  Intent intent = new Intent(Intent.ACTION_VIEW);
+
+                                  Uri uri = saveWallpaperAndGetUri(resource, wallpaper.id);
+
+                                  if (uri != null) {
+                                      intent.setDataAndType(uri, "image/*");
+                                      mCtx.startActivity(Intent.createChooser(intent, "Wallpapers Hub"));
+                                  }
+                              }
+                          }
+                    );
+        }
+
+
+        private Uri saveWallpaperAndGetUri(Bitmap bitmap, String id) {
+            if (ContextCompat.checkSelfPermission(mCtx, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                if (ActivityCompat
+                        .shouldShowRequestPermissionRationale((Activity) mCtx, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+
+                    Uri uri = Uri.fromParts("package", mCtx.getPackageName(), null);
+                    intent.setData(uri);
+
+                    mCtx.startActivity(intent);
+
+                } else {
+                    ActivityCompat.requestPermissions((Activity) mCtx, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 100);
+                }
+                return null;
+            }
+
+            File folder = new File(Environment.getExternalStorageDirectory().toString() + "/wallpapers_hubs");
+            folder.mkdirs();
+
+            File file = new File(folder, id + ".jpg");
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+                out.flush();
+                out.close();
+
+                return Uri.fromFile(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         @Override
