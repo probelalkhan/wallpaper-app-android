@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,9 +29,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import net.simplifiedcoding.wallpaperhub.Manifest;
+import net.simplifiedcoding.wallpaperhub.BuildConfig;
 import net.simplifiedcoding.wallpaperhub.R;
-import net.simplifiedcoding.wallpaperhub.models.Category;
 import net.simplifiedcoding.wallpaperhub.models.Wallpaper;
 
 import java.io.File;
@@ -150,7 +150,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                 FileOutputStream out = new FileOutputStream(file);
                 bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
                 out.close();
-                bmpUri = Uri.fromFile(file);
+                bmpUri = FileProvider.getUriForFile(mCtx, BuildConfig.APPLICATION_ID + ".provider", file);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -216,7 +216,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                 out.flush();
                 out.close();
 
-                return Uri.fromFile(file);
+                return FileProvider.getUriForFile(mCtx, BuildConfig.APPLICATION_ID + ".provider", file);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

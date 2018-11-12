@@ -22,6 +22,21 @@
         </activity>
         <activity android:name=".activities.HomeActivity" />
         <activity android:name=".activities.WallpapersActivity"></activity>
+
+
+        <provider
+            android:exported="false"
+            android:grantUriPermissions="true"
+            android:authorities="${applicationId}.provider"
+            android:name="android.support.v4.content.FileProvider">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_path"
+                />
+
+        </provider>
+
     </application>
 
 </manifest>

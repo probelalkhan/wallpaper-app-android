@@ -36,7 +36,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         this.categoryList = categoryList;
 
         mInterstitialAd = new InterstitialAd(mCtx);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-6677140660293215/9762844227");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
@@ -80,7 +80,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
             if (mInterstitialAd.isLoaded()) {
                 mInterstitialAd.show();
             } else {
-                Toast.makeText(mCtx, "Ad not loaded", Toast.LENGTH_LONG).show();
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
             }
 
             int p = getAdapterPosition();
